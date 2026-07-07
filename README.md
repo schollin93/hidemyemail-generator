@@ -166,6 +166,28 @@ Options:
 | `--output` | File used to append generated addresses. Defaults to `emails.txt`. |
 | `--no-output-file` | Print results without writing to an output file. |
 | `--region` | `global` (default) or `china`. |
+| `--every-minutes` | Keep running and attempt generation every N minutes. `0` (default) runs once. |
+
+### Continuous Generation
+
+Keep the tool running and attempt a new address on a fixed cadence:
+
+```bash
+uv run hidemyemail generate --label auto --every-minutes 8
+```
+
+While waiting between attempts, the loop prints a heartbeat every 15 seconds
+with the totals so far and the time of the next attempt. Attempts that hit the
+iCloud creation limit simply fail and are retried on the next cycle, and the
+cookie file is re-read every cycle, so you can replace an expired cookie
+without restarting. Stop with `Ctrl+C` to get a final tally.
+
+On Linux/macOS, `auto-generate.sh` wraps this:
+
+```bash
+./auto-generate.sh              # label "auto", one attempt every 8 minutes
+./auto-generate.sh shopping 10  # custom label and interval
+```
 
 ### List
 
